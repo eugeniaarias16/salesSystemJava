@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AdressDto {
+public class AddressDto {
     
     private Long id;
 
@@ -42,7 +42,7 @@ public class AdressDto {
     @NotBlank
     private String city;
 
-    public AdressDto(Address address){
+    public AddressDto(Address address){
         this.id = address.getId();
         this.street = address.getStreet();
         this.number = address.getNumber();
