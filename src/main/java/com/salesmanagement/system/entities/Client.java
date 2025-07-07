@@ -24,26 +24,30 @@ public class Client {
 
     private String firstName;
     private String lastName;
-    private long dni;
+    private Integer dni;
     private LocalDate birthDate;
 
     //Existing relationships with other entities
-    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Address> addresses= new ArrayList<>();
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Sale> sales= new ArrayList<>();
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sale> sales = new ArrayList<>();
 
-    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Receipt>receipts=new ArrayList<>();
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Receipt> receipts = new ArrayList<>();
 
     //Convenience methods for handling addresses
-    public void addAddress(Address address){
+    public void addAddress(Address address) {
         addresses.add(address);
         address.setClient(this); //synchronize both sides of the relation
     }
-    public void removeAddress(Address address){
+
+    public void removeAddress(Address address) {
         addresses.remove(address);
         address.setClient(null);//breaks the association between that address and the customer
     }
+
+
+
 }
