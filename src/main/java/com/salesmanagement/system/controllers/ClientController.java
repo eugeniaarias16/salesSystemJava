@@ -4,6 +4,7 @@ import com.salesmanagement.system.DTO.ClientDto;
 import com.salesmanagement.system.responses.ApiResponse;
 import com.salesmanagement.system.services.ClientService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class ClientController {
     @PostMapping("/create")
     public ResponseEntity<ClientDto> createClient(@Valid @RequestBody ClientDto clientDto){
         ClientDto savedClient= clientService.createClient(clientDto);
-        return ResponseEntity.ok(savedClient);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedClient);
     }
 
     @PutMapping("/{id}")
