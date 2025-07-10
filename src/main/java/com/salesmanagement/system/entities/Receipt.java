@@ -26,8 +26,9 @@ public class Receipt {
     @ManyToOne
     @JoinColumn(name = "client_id",nullable = false)
     private  Client client;
-
+    @Column(nullable = false)
     private double totalAmount;
+    @Column(nullable = false)
     private LocalDate date;
 
 
