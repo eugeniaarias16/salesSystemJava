@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/clients")
@@ -58,6 +59,16 @@ public class ClientController {
             @Parameter(description = "Client ID") @PathVariable Long id,
             @Valid @RequestBody ClientDto clientDto) {
         ClientDto updatedClient = clientService.updateClient(id, clientDto);
+        return ResponseEntity.ok(updatedClient);
+    }
+
+    @Operation(summary = "Partially update a client by ID", description = "Updates specific fields of a client.")
+    @ApiResponse(responseCode = "200", description = "Client updated successfully")
+    @PatchMapping("/{id}")
+    public ResponseEntity<ClientDto> partiallyUpdateClient(
+            @Parameter(description = "ID of the client to update") @PathVariable Long id,
+            @RequestBody Map<String, Object> updates) {
+        ClientDto updatedClient = clientService.partiallyUpdateClient(id, updates);
         return ResponseEntity.ok(updatedClient);
     }
 

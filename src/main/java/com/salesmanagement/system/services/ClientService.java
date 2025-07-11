@@ -7,7 +7,9 @@ import com.salesmanagement.system.exceptions.ResourceNotFoundException;
 import com.salesmanagement.system.repositories.ClientRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -78,6 +80,25 @@ public class ClientService implements IClientService {
         existingClient.setBirthDate(clientDto.getBirthDate());
         Client savedClient= clientRepository.save(existingClient);
         return  new ClientDto(savedClient);
+    }
+
+    @Override
+    public ClientDto partiallyUpdateClient(Long id, Map<String, Object> updates) {
+        Client existingClient = clientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Client with ID " + id + " not found."));
+
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "firstName" -> existingClient.setFirstName((String) value);
+                case "lastName" -> existingClient.setLastName((String) value);
+                case "dni" -> existingClient.setDni((Long) value);
+                case "birthDate"->existingClient.setBirthDate((LocalDate) value);
+
+            }
+        });
+
+        Client savedClient = clientRepository.save(existingClient);
+        return new ClientDto(savedClient);
     }
 
 

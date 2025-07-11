@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -62,6 +63,17 @@ public class ProductController {
         ProductDto updatedProduct = productService.upDateProductByID(id, productDto);
         return ResponseEntity.ok(updatedProduct);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProductDto> updatePartialProduct(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> updates) {
+
+        ProductDto updatedProduct = productService.updatePartial(id, updates);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
+
 
     @Operation(summary = "Delete a product by ID", description = "Deletes the product with the given ID.")
     @ApiResponse(responseCode = "200", description = "Product deleted successfully")

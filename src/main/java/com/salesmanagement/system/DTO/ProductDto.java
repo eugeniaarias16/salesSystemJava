@@ -5,15 +5,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "Data Transfer Object for Product")
 public class ProductDto {
 
-    @Schema(description = "Unique identifier of the product", example = "1")
+    @Schema(description = "Unique identifier of the product", example = "1",accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
     @Schema(description = "Product's full name", example = "Soccer ball")
@@ -55,6 +59,17 @@ public class ProductDto {
     public Product toEntity(){
         Product product = new Product();
         product.setId(this.id);
+        product.setName(this.name);
+        product.setDescription(this.description);
+        product.setPrice(this.price);
+        product.setStock(this.stock);
+        product.setColor(this.color);
+        product.setSize(this.sizes);
+        return product;
+    }
+
+    public Product toEntityWithNoId(){
+        Product product = new Product();
         product.setName(this.name);
         product.setDescription(this.description);
         product.setPrice(this.price);

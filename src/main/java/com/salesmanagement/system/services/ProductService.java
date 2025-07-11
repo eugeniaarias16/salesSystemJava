@@ -7,6 +7,7 @@ import com.salesmanagement.system.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +36,7 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
-        Product product= productDto.toEntity();
+        Product product= productDto.toEntityWithNoId();
         Product savedProduct= productRepository.save(product);
         return new ProductDto(savedProduct);
     }
@@ -53,6 +54,25 @@ public class ProductService implements IProductService {
 
         Product savedProduct=productRepository.save(existingProduct);
         return new ProductDto(savedProduct);
+    }
+
+    @Override
+    public ProductDto updatePartial(Long id, Map<String, Object> updates) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "name" -> product.setName((String) value);
+                case "description" -> product.setDescription((String) value);
+                case "stock" -> product.setStock((Integer) value);
+                case "price" -> product.setPrice(((Number) value).doubleValue());
+                case "color" -> product.setColor((String) value);
+                case "sizes" -> product.setSize((String) value);
+            }
+        });
+
+        return new ProductDto(productRepository.save(product));
     }
 
     @Override
