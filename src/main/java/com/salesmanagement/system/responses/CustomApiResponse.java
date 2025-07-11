@@ -6,11 +6,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 
-public class ApiResponse {
+public class CustomApiResponse {
     private String message;
     private LocalDate localDate;
 
-    public ApiResponse(String message){
+    public CustomApiResponse(String message){
         this.localDate=LocalDate.now();
         this.message=message;
     }

@@ -24,7 +24,7 @@ public class Client {
 
     private String firstName;
     private String lastName;
-    private Integer dni;
+    private Long dni;
     private LocalDate birthDate;
 
     //Existing relationships with other entities

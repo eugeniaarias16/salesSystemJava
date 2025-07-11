@@ -2,6 +2,7 @@ package com.salesmanagement.system.services;
 
 import com.salesmanagement.system.DTO.ClientDto;
 import com.salesmanagement.system.entities.Client;
+import com.salesmanagement.system.exceptions.BadRequestException;
 import com.salesmanagement.system.exceptions.ResourceNotFoundException;
 import com.salesmanagement.system.repositories.ClientRepository;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,23 @@ public class ClientService implements IClientService {
     }
 
     @Override
+    public ClientDto getClientByDni(Long dni) {
+        Client client=clientRepository.findClientByDni(dni)
+                .orElseThrow(()->new ResourceNotFoundException("Client not found with dni "+dni));
+
+        return new ClientDto(client);
+
+    }
+    @Override
     public ClientDto createClient(ClientDto clientDto) {
-        Client client= clientDto.toEntity();
+        Client client= clientDto.toEntityWithoutId();
+
+        //check if the customer with that dni number does not exist
+        Long clientDni=client.getDni();
+        if(clientRepository.findClientByDni(clientDni).isPresent()){
+            throw new BadRequestException("Client with DNI " + clientDni + " already exists.");
+        }
+
         Client clientSaved=clientRepository.save(client);
         return new ClientDto(clientSaved); //client with id
     }
@@ -63,4 +79,6 @@ public class ClientService implements IClientService {
         Client savedClient= clientRepository.save(existingClient);
         return  new ClientDto(savedClient);
     }
+
+
 }

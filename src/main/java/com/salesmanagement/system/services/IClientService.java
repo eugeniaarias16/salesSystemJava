@@ -13,5 +13,6 @@ public interface IClientService {
     ClientDto createClient(ClientDto clientDto);
     void deleteClientById(Long id);
     ClientDto updateClient(Long id, ClientDto clientDto);
+    ClientDto getClientByDni(Long dni);
     //SaleDTO getPurchaseOfProduct(Long clientId, Long productId);
 }

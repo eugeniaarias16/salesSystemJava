@@ -1,7 +1,10 @@
 package com.salesmanagement.system.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 @Getter
 public enum AddressType {
@@ -25,6 +28,16 @@ public enum AddressType {
 
     // Other address not categorized
     OTHER("Other", "Additional address not categorized in the above types.");
+
+    @JsonCreator
+    public static AddressType fromString(String value) {
+        return Arrays.stream(AddressType.values())
+                .filter(v -> v.name().equalsIgnoreCase(value.trim()) || v.displayName.equalsIgnoreCase(value.trim()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid address type: " + value));
+    }
+
+
 
     //Getter
     private final String displayName;

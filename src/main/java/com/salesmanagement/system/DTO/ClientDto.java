@@ -1,6 +1,7 @@
 package com.salesmanagement.system.DTO;
 
 import com.salesmanagement.system.entities.Client;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -16,24 +17,31 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "DTO representing a client")
 public class ClientDto {
 
-
+    @Schema(description = "Unique identifier of the client", example = "101")
     private Long id;
+
     @NotBlank
     @Size(min = 2, max = 70)
+    @Schema(description = "Client's first name", example = "John")
     private String firstName;
 
     @NotBlank
     @Size(min = 2, max = 70)
+    @Schema(description = "Client's last name", example = "Doe")
     private String lastName;
-    private Integer dni;
 
-    @Past( message = "The date of birth must be earlier than today.")
+    @Schema(description = "Client's national ID number", example = "40123456")
+    private Long dni;
+
+    @Past(message = "The date of birth must be earlier than today.")
     @NotNull(message = "The date of birth is mandatory.")
+    @Schema(description = "Client's date of birth", example = "1990-05-20")
     private LocalDate birthDate;
 
-    //constructor to convert Client to ClientDto
+    // Constructor to convert Client to ClientDto
     public ClientDto(Client client) {
         if (client != null) {
             this.id = client.getId();
@@ -43,19 +51,25 @@ public class ClientDto {
             this.lastName = client.getLastName();
         }
     }
-     //method to convert ClientDto to Client
-     public Client toEntity(){
-         Client client= new Client();
-         client.setId(this.id);
-         client.setFirstName(this.firstName);
-         client.setLastName(this.lastName);
-         client.setDni(this.dni);
-         client.setBirthDate(this.birthDate);
 
-         return client;
-     }
+    // Method to convert ClientDto to Client
+    public Client toEntity() {
+        Client client = new Client();
+        client.setId(this.id);
+        client.setFirstName(this.firstName);
+        client.setLastName(this.lastName);
+        client.setDni(this.dni);
+        client.setBirthDate(this.birthDate);
+        return client;
+    }
 
-
+    // Convert to Client without ID
+    public Client toEntityWithoutId() {
+        Client client = new Client();
+        client.setFirstName(this.firstName);
+        client.setLastName(this.lastName);
+        client.setDni(this.dni);
+        client.setBirthDate(this.birthDate);
+        return client;
+    }
 }
-
-
