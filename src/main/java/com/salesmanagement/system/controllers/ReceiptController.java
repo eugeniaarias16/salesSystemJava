@@ -2,7 +2,8 @@ package com.salesmanagement.system.controllers;
 
 import com.salesmanagement.system.DTO.ReceiptDto;
 import com.salesmanagement.system.responses.CustomApiResponse;
-import com.salesmanagement.system.services.ReceiptService;
+import com.salesmanagement.system.services.IReceiptService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,9 +24,9 @@ import java.util.List;
 @Tag(name = "Receipt Controller", description = "Operations related to receipts (sales records)")
 public class ReceiptController {
 
-    private final ReceiptService receiptService;
+    private final IReceiptService receiptService;
 
-    public ReceiptController(ReceiptService receiptService) {
+    public ReceiptController(IReceiptService receiptService) {
         this.receiptService = receiptService;
     }
 

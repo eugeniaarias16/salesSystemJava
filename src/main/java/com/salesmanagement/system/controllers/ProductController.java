@@ -2,11 +2,9 @@ package com.salesmanagement.system.controllers;
 
 import com.salesmanagement.system.DTO.ProductDto;
 import com.salesmanagement.system.responses.CustomApiResponse;
-import com.salesmanagement.system.services.ProductService;
+import com.salesmanagement.system.services.IProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -22,9 +20,9 @@ import java.util.Map;
 @Tag(name = "Product Controller", description = "Operations related to products")
 public class ProductController {
 
-    private final ProductService productService;
+    private final IProductService productService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(IProductService productService) {
         this.productService = productService;
     }
 

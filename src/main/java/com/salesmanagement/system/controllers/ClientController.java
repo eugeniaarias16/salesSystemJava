@@ -2,7 +2,7 @@ package com.salesmanagement.system.controllers;
 
 import com.salesmanagement.system.DTO.ClientDto;
 import com.salesmanagement.system.responses.CustomApiResponse;
-import com.salesmanagement.system.services.ClientService;
+import com.salesmanagement.system.services.IClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,9 +20,9 @@ import java.util.Map;
 @Tag(name = "Client Controller", description = "Operations related to clients")
 public class ClientController {
 
-    private final ClientService clientService;
+    private final IClientService clientService;
 
-    public ClientController(ClientService clientService) {
+    public ClientController(IClientService clientService) {
         this.clientService = clientService;
     }
 

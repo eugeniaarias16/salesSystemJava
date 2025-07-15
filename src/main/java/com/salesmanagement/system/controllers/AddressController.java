@@ -3,7 +3,7 @@ package com.salesmanagement.system.controllers;
 import com.salesmanagement.system.DTO.AddressDto;
 import com.salesmanagement.system.entities.AddressType;
 import com.salesmanagement.system.responses.CustomApiResponse;
-import com.salesmanagement.system.services.AddressService;
+import com.salesmanagement.system.services.IAddressService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,9 +20,9 @@ import java.util.List;
 @Tag(name = "Address Controller", description = "Operations related to client addresses")
 public class AddressController {
 
-    private final AddressService addressService;
+    private final IAddressService addressService;
 
-    public AddressController(AddressService addressService) {
+    public AddressController(IAddressService addressService) {
         this.addressService = addressService;
     }
 

@@ -1,0 +1,1442 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Receipt Controller",
+      "description": "Operations related to receipts (sales records)"
+    },
+    {
+      "name": "Address Controller",
+      "description": "Operations related to client addresses"
+    },
+    {
+      "name": "Client Controller",
+      "description": "Operations related to clients"
+    },
+    {
+      "name": "Product Controller",
+      "description": "Operations related to products"
+    }
+  ],
+  "paths": {
+    "/api/receipts/{receiptId}": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get receipt by ID",
+        "description": "Returns the receipt corresponding to the given ID.",
+        "operationId": "getReceiptById",
+        "parameters": [
+          {
+            "name": "receiptId",
+            "in": "path",
+            "description": "ID of the receipt to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipt found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Receipt not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Mark receipt as returned",
+        "description": "Flags a receipt as returned (cancellation logic).",
+        "operationId": "returnReceipt",
+        "parameters": [
+          {
+            "name": "receiptId",
+            "in": "path",
+            "description": "Receipt ID to mark as returned",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipt marked as returned",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{id}": {
+      "get": {
+        "tags": [
+          "Product Controller"
+        ],
+        "summary": "Get product by ID",
+        "description": "Returns a single product by its ID.",
+        "operationId": "getProductById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the product to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Product Controller"
+        ],
+        "summary": "Update a product by ID",
+        "description": "Updates the data of an existing product.",
+        "operationId": "upDateProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the product to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Product Controller"
+        ],
+        "summary": "Delete a product by ID",
+        "description": "Deletes the product with the given ID.",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the product to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product deleted successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Product Controller"
+        ],
+        "operationId": "updatePartialProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clients/{id}": {
+      "get": {
+        "tags": [
+          "Client Controller"
+        ],
+        "summary": "Get client by ID",
+        "description": "Returns the client with the specified ID.",
+        "operationId": "getClientById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Client retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Client Controller"
+        ],
+        "summary": "Update a client",
+        "description": "Updates the client with the given ID.",
+        "operationId": "updateClient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Client updated successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Client Controller"
+        ],
+        "summary": "Delete a client",
+        "description": "Deletes the client with the specified ID.",
+        "operationId": "deleteClient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Client deleted successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Client Controller"
+        ],
+        "summary": "Partially update a client by ID",
+        "description": "Updates specific fields of a client.",
+        "operationId": "partiallyUpdateClient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the client to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Client updated successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/addresses/{id}": {
+      "put": {
+        "tags": [
+          "Address Controller"
+        ],
+        "summary": "Update address by ID",
+        "description": "Updates an existing address.",
+        "operationId": "upDateAddress",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Address ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Address updated successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Address Controller"
+        ],
+        "summary": "Delete address by ID",
+        "description": "Deletes the address with the specified ID.",
+        "operationId": "deleteAddress",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Address ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Address deleted successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/receipts": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get all receipts",
+        "description": "Returns a list of all registered receipts.",
+        "operationId": "getAllReceipts",
+        "responses": {
+          "200": {
+            "description": "List retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Create a new receipt",
+        "description": "Creates a new sales receipt with items and total.",
+        "operationId": "createReceipt",
+        "requestBody": {
+          "description": "Receipt data to be created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Receipt created successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "tags": [
+          "Product Controller"
+        ],
+        "summary": "Get all products",
+        "description": "Returns a list of all products.",
+        "operationId": "getAllProducts",
+        "responses": {
+          "200": {
+            "description": "Products retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Product Controller"
+        ],
+        "summary": "Create a new product",
+        "description": "Creates a new product with the provided data.",
+        "operationId": "createProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clients/{id}/addresses": {
+      "get": {
+        "tags": [
+          "Address Controller"
+        ],
+        "summary": "Get addresses by client ID",
+        "description": "Returns all addresses for a given client.",
+        "operationId": "getAddressesByClientID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Client addresses retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AddressDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Address Controller"
+        ],
+        "summary": "Create a new address for a client",
+        "description": "Creates and assigns an address to a specific client.",
+        "operationId": "createAddress",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Address created successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clients/create": {
+      "post": {
+        "tags": [
+          "Client Controller"
+        ],
+        "summary": "Create a new client",
+        "description": "Creates a new client.",
+        "operationId": "createClient",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Client created successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/receipts/totalAmount": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get receipts with specific total amount",
+        "description": "Returns receipts with exact total amount.",
+        "operationId": "getByTotalAmount",
+        "parameters": [
+          {
+            "name": "totalAmount",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipts retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/receipts/totalAmount/less": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get receipts with total amount less than a value",
+        "description": "Returns receipts where total is less than the provided amount.",
+        "operationId": "getByTotalAmountLessThan",
+        "parameters": [
+          {
+            "name": "amountLess",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipts retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/receipts/totalAmount/greater": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get receipts with total amount greater than a value",
+        "description": "Returns receipts where total is greater than the provided amount.",
+        "operationId": "getByTotalAmountGreaterThan",
+        "parameters": [
+          {
+            "name": "amountGreater",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipts retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/receipts/totalAmount/between": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get receipts by total amount range",
+        "description": "Returns receipts where total amount is between two values.",
+        "operationId": "getByTotalAmountBetween",
+        "parameters": [
+          {
+            "name": "minAmount",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "maxAmount",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipts retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/receipts/dates": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get receipts between two dates",
+        "description": "Returns receipts issued between two dates.",
+        "operationId": "getReceiptBetweenDates",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipts retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/receipts/date/{date}": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get receipts by date",
+        "description": "Returns all receipts for a specific date.",
+        "operationId": "getReceiptByDate",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "description": "Date in format YYYY-MM-DD",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipts retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/receipts/date/before": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get receipts before a date",
+        "description": "Returns receipts issued before a given date.",
+        "operationId": "getReceiptByDateBefore",
+        "parameters": [
+          {
+            "name": "dateBefore",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipts retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/receipts/date/after": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get receipts after a date",
+        "description": "Returns receipts issued after a given date.",
+        "operationId": "getReceiptByDateAfter",
+        "parameters": [
+          {
+            "name": "dateAfter",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipts retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/receipts/client/{clientId}": {
+      "get": {
+        "tags": [
+          "Receipt Controller"
+        ],
+        "summary": "Get receipts by client ID",
+        "description": "Returns all receipts linked to a specific client.",
+        "operationId": "getReceiptByClientId",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receipts retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clients": {
+      "get": {
+        "tags": [
+          "Client Controller"
+        ],
+        "summary": "Get all clients",
+        "description": "Returns a list of all registered clients.",
+        "operationId": "getAllClients",
+        "responses": {
+          "200": {
+            "description": "Clients retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClientDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clients/{id}/addresses/{type}": {
+      "get": {
+        "tags": [
+          "Address Controller"
+        ],
+        "summary": "Get addresses by client ID and type",
+        "description": "Returns client addresses filtered by address type.",
+        "operationId": "getAddressByClientAndByType",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "description": "Type of address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Address",
+                "Work",
+                "Invoicing",
+                "Shipping",
+                "Temporary",
+                "Emergency",
+                "Other"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filtered addresses retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AddressDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/addresses": {
+      "get": {
+        "tags": [
+          "Address Controller"
+        ],
+        "summary": "Get all addresses",
+        "description": "Returns a list of all addresses.",
+        "operationId": "getAllAddresses",
+        "responses": {
+          "200": {
+            "description": "Addresses retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AddressDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/addresses/city/{city}": {
+      "get": {
+        "tags": [
+          "Address Controller"
+        ],
+        "summary": "Get addresses by city",
+        "description": "Returns all addresses located in a given city.",
+        "operationId": "getAddressesByCity",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "path",
+            "description": "City name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Addresses in city retrieved successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AddressDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CustomApiResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "localDate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "ProductDto": {
+        "required": [
+          "description",
+          "name",
+          "price",
+          "stock"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the product",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Product's full name",
+            "example": "Soccer ball"
+          },
+          "description": {
+            "type": "string",
+            "description": "Product description",
+            "example": "High quality size 5 soccer ball."
+          },
+          "stock": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Available stock units",
+            "format": "int32",
+            "example": 100
+          },
+          "price": {
+            "minimum": 0,
+            "type": "number",
+            "description": "Unit price of the product",
+            "format": "double",
+            "example": 19.99
+          },
+          "color": {
+            "type": "string",
+            "description": "Color of the product",
+            "example": "Red/Black"
+          },
+          "sizes": {
+            "type": "string",
+            "description": "Available sizes",
+            "example": "S,M,L,XL"
+          }
+        },
+        "description": "Data Transfer Object for Product"
+      },
+      "ClientDto": {
+        "required": [
+          "birthDate",
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the client",
+            "format": "int64",
+            "example": 101
+          },
+          "firstName": {
+            "maxLength": 70,
+            "minLength": 2,
+            "type": "string",
+            "description": "Client's first name",
+            "example": "John"
+          },
+          "lastName": {
+            "maxLength": 70,
+            "minLength": 2,
+            "type": "string",
+            "description": "Client's last name",
+            "example": "Doe"
+          },
+          "dni": {
+            "type": "integer",
+            "description": "Client's national ID number",
+            "format": "int64",
+            "example": 40123456
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Client's date of birth",
+            "format": "date",
+            "example": "1990-05-20"
+          }
+        },
+        "description": "DTO representing a client"
+      },
+      "AddressDto": {
+        "required": [
+          "addressType",
+          "city",
+          "number",
+          "postalCode",
+          "province",
+          "street"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the address",
+            "format": "int64",
+            "example": 1001
+          },
+          "clientId": {
+            "type": "integer",
+            "description": "ID of the associated client",
+            "format": "int64",
+            "example": 501
+          },
+          "street": {
+            "type": "string",
+            "description": "Street name of the address",
+            "example": "Av. San Martín"
+          },
+          "addressType": {
+            "type": "string",
+            "description": "Type of the address",
+            "example": "HOME",
+            "enum": [
+              "Address",
+              "Work",
+              "Invoicing",
+              "Shipping",
+              "Temporary",
+              "Emergency",
+              "Other"
+            ]
+          },
+          "number": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "Street number of the address",
+            "format": "int32",
+            "example": 1234
+          },
+          "floor": {
+            "type": "integer",
+            "description": "Floor number (optional)",
+            "format": "int32",
+            "example": 3
+          },
+          "apartment": {
+            "type": "string",
+            "description": "Apartment (optional)",
+            "example": "B"
+          },
+          "postalCode": {
+            "pattern": "\\d{4,5}",
+            "type": "string",
+            "description": "Postal code of the address",
+            "example": "5000"
+          },
+          "province": {
+            "type": "string",
+            "description": "Province of the address",
+            "example": "Córdoba"
+          },
+          "city": {
+            "type": "string",
+            "description": "City of the address",
+            "example": "Córdoba"
+          }
+        },
+        "description": "DTO representing an address associated with a client"
+      },
+      "LineItemDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "ID of the associated product",
+            "format": "int64",
+            "example": 101
+          },
+          "quantity": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "Quantity of the product purchased",
+            "format": "int32",
+            "example": 2
+          },
+          "lineTotal": {
+            "minimum": 0,
+            "type": "number",
+            "description": "Total cost for this line (price × quantity)",
+            "format": "double",
+            "example": 59.98
+          }
+        },
+        "description": "Line item representing a product within a receipt, including quantity and total"
+      },
+      "ReceiptDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the receipt",
+            "format": "int64",
+            "example": 2001
+          },
+          "clientId": {
+            "type": "integer",
+            "description": "Client ID associated with the receipt",
+            "format": "int64",
+            "example": 101
+          },
+          "totalAmount": {
+            "type": "number",
+            "description": "Total amount of the receipt",
+            "format": "double",
+            "example": 149.99
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of the receipt",
+            "format": "date",
+            "example": "2025-07-11"
+          },
+          "linesItems": {
+            "type": "array",
+            "description": "List of items in the receipt",
+            "items": {
+              "$ref": "#/components/schemas/LineItemDto"
+            }
+          }
+        },
+        "description": "DTO representing a sales receipt with line items"
+      }
+    }
+  }
+}
